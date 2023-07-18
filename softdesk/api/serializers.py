@@ -1,4 +1,4 @@
-from .models import Contributor, Project
+from .models import Contributor, Project, Issue
 from rest_framework import serializers
 
 
@@ -23,3 +23,18 @@ class ProjectSerializer(serializers.ModelSerializer):
                   'title',
                   'description',
                   'contributors']
+
+
+class IssueSerializer(serializers.ModelSerializer):
+    """
+    Issue Serializer
+    """
+    class Meta:
+        model = Issue
+        fields = ['id',
+                  'title',
+                  'project',
+                  'description',
+                  'author',
+                  'assigned_user',
+                  'tag', 'priority', 'status', 'created_at']

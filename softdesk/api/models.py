@@ -33,3 +33,43 @@ class Project(models.Model):
         return self.title
 
 
+class Issue(models.Model):
+    """
+    Issue Model
+    """
+    TAG_CHOICES = (
+        ('B', 'Bug'),
+        ('T', 'Task'),
+        ('S', 'STORY'),
+    )
+    STATUS_CHOICES = (
+        ('O', 'OPEN'),
+        ('I', 'IN PROGRESS'),
+        ('R', 'IN REVIEW'),
+        ('D', 'DONE'),
+        ('C', 'CLOSED'),
+    )
+    PRIORITY_CHOICES = (
+        ('L', 'LOW'),
+        ('M', 'MEDIUM'),
+        ('H', 'HIGH'),
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    project = models.ForeignKey(Project, related_name='issues', on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    title = models.CharField(max_length=120)
+    description = models.CharField(max_length=300)
+    tag = models.CharField(max_length=50, choices=TAG_CHOICES)
+    priority = models.CharField(max_length=50, choices=PRIORITY_CHOICES)
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES)
+    assigned_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='assigned_user',
+        blank=True,
+        null=True
+    )
+
+    def __str__(self):
+        return self.title
