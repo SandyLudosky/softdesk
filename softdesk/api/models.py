@@ -32,7 +32,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     contributors = models.ManyToManyField(Contributor, blank=True, related_name='projects', default=[])
-    project_type = models.CharField(max_length=9, choices=TYPES_CHOICES, default='B')
+    project_type = models.CharField(max_length=9, choices=TYPES_CHOICES, default='')
     title = models.CharField(max_length=100, blank=True, default='')
     description = models.CharField(max_length=300, blank=True, default='')
 
@@ -46,15 +46,13 @@ class Issue(models.Model):
     """
     TAG_CHOICES = (
         ('B', 'Bug'),
-        ('T', 'Task'),
-        ('S', 'STORY'),
+        ('T', 'TASK'),
+        ('F', 'FEATURE'),
     )
     STATUS_CHOICES = (
-        ('O', 'OPEN'),
+        ('T', 'TODO'),
         ('I', 'IN PROGRESS'),
-        ('R', 'IN REVIEW'),
-        ('D', 'DONE'),
-        ('C', 'CLOSED'),
+        ('F', 'FINISHED')
     )
     PRIORITY_CHOICES = (
         ('L', 'LOW'),

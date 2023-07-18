@@ -1,10 +1,14 @@
-from rest_framework import generics
+from rest_framework import generics, permissions
+from .permissions import IsOwnerOrReadOnly
 from .models import Contributor, Project, Issue, Comment
 from .serializers import ContributorSerializer,  ProjectSerializer, \
     IssueSerializer, CommentSerializer
 
 
 class ProjectList(generics.ListCreateAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
+                          IsOwnerOrReadOnly]
+
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
@@ -17,6 +21,8 @@ class ProjectList(generics.ListCreateAPIView):
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
