@@ -4,8 +4,9 @@ from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
 from rest_framework.parsers import JSONParser
-from .models import Contributor, Project, Issue
-from .serializers import ContributorSerializer,  ProjectSerializer, IssueSerializer
+from .models import Contributor, Project, Issue, Comment
+from .serializers import ContributorSerializer,  ProjectSerializer, \
+    IssueSerializer, CommentSerializer
 
 
 @csrf_exempt
@@ -67,7 +68,7 @@ def project_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def project_detail(request, pk):
     """
-    Retrieve, update or delete a code snippet.
+    Retrieve, update or delete a project.
     """
     try:
         project = Project.objects.get(pk=pk)
@@ -93,7 +94,7 @@ def project_detail(request, pk):
 @api_view(['GET', 'POST'])
 def issue_list(request):
     """
-    List all projects, or create a new project.
+    List all issues, or create a new issue.
     """
     if request.method == 'GET':
         issue = Issue.objects.all()
@@ -111,7 +112,7 @@ def issue_list(request):
 @api_view(['GET', 'PUT', 'DELETE'])
 def issue_detail(request, pk):
     """
-    Retrieve, update or delete a code snippet.
+    Retrieve, update or delete an issue.
     """
     try:
         issue = Issue.objects.get(pk=pk)
@@ -131,4 +132,48 @@ def issue_detail(request, pk):
 
     elif request.method == 'DELETE':
         issue.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['GET', 'POST'])
+def comment_list(request):
+    """
+    List all comments, or create a new comment.
+    """
+    if request.method == 'GET':
+        comment = Comment.objects.all()
+        serializer = CommentSerializer(comment, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def comment_detail(request, pk):
+    """
+    Retrieve, update or delete a comment.
+    """
+    try:
+        comment = Comment.objects.get(pk=pk)
+    except Comment.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = IssueSerializer(comment)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = IssueSerializer(comment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        comment.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
