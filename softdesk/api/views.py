@@ -8,8 +8,12 @@ class ProjectList(generics.ListCreateAPIView):
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(contributor=self.request.user)
+    def perform_create(self, serializer): # read data from request
+        if self.request.user.is_authenticated:
+            serializer.save(author=self.request.user)
+            serializer.save(contributors=self.request.user)
+        else:
+            serializer.save()
 
 
 class ProjectDetail(generics.RetrieveUpdateDestroyAPIView):

@@ -23,7 +23,7 @@ class Project(models.Model):
     """
     Project Model
     """
-    TYPES = (
+    TYPES_CHOICES = (
         ('B', 'BACKEND'),
         ('F', 'FRONTEND'),
         ('I', 'IOS'),
@@ -32,6 +32,7 @@ class Project(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     contributors = models.ManyToManyField(Contributor, blank=True, related_name='projects', default=[])
+    project_type = models.CharField(max_length=9, choices=TYPES_CHOICES, default='B')
     title = models.CharField(max_length=100, blank=True, default='')
     description = models.CharField(max_length=300, blank=True, default='')
 
