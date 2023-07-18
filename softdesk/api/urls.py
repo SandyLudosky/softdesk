@@ -1,16 +1,16 @@
 from django.urls import path
-from .views import contributor_list, contributor_detail, ProjectList, ProjectDetail,\
-      issue_list, issue_detail, comment_list, comment_detail
+from .views import ContributorList, ContributorDetail,  ProjectList, ProjectDetail,\
+      IssueList, IssueDetail, CommentList, CommentDetail
 
 
 urlpatterns = [
-    path('contributors/', contributor_list),
-    path('contributors/<int:pk>/', contributor_detail),
+    path('contributors/', ContributorList.as_view()),
+    path('contributors/<int:pk>/', ContributorDetail.as_view()),
     path('projects/', ProjectList.as_view()),
     path('projects/<int:pk>/', ProjectDetail.as_view()),
-    path('issues/', issue_list),
-    path('issues/<int:pk>/', issue_detail),
-    path('comments/', issue_list),
-    path('comments/<int:pk>/', issue_detail),
+    path('issues/', IssueList.as_view()),
+    path('issues/<int:pk>/', IssueDetail.as_view()),
+    path('comments/', CommentList.as_view()),
+    path('comments/<int:pk>/', CommentDetail.as_view()),
 ]
 
