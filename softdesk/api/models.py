@@ -23,6 +23,12 @@ class Project(models.Model):
     """
     Project Model
     """
+    TYPES = (
+        ('B', 'BACKEND'),
+        ('F', 'FRONTEND'),
+        ('I', 'IOS'),
+        ('A', 'Android'),
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     contributors = models.ManyToManyField(Contributor, blank=True, related_name='projects', default=[])
