@@ -6,8 +6,7 @@ from .serializers import ContributorSerializer,  ProjectSerializer, \
 
 
 class ProjectList(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly,
-                          IsOwnerOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticated]
 
     queryset = Project.objects.all()
     serializer_class = ProjectSerializer
