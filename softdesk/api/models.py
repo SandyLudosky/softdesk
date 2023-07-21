@@ -1,6 +1,6 @@
 from django.db import models
 from authentication.models import User
-
+import uuid
 
 # Create your models here.
 
@@ -84,10 +84,11 @@ class Comment(models.Model):
     """
     Comment model
     """
+    _id = uuid.uuid1()
     created_at = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(
         User,
-        on_delete=models.CASCADE,
+            on_delete=models.CASCADE,
     )
     issue = models.ForeignKey(Issue, related_name='comments', on_delete=models.CASCADE)
     description = models.CharField(max_length=300)
