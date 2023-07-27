@@ -7,7 +7,7 @@ class User(AbstractUser):
     """
     Custom User Model
     """
-    age = models.PositiveIntegerField(blank=True, null=True)
+    age = models.PositiveIntegerField()
     can_be_shared = models.BooleanField(default=False)
     can_be_contacted = models.BooleanField(default=False)
 
